@@ -9,18 +9,24 @@ const patientRoutes = require("./src/routes/patientRoutes");
 const appointmentRoutes = require("./src/routes/appointmentRoutes");
 const treatmentRoutes = require("./src/routes/treatmentRoutes");
 const billRoutes = require("./src/routes/billRoutes");
+const authenticateToken = require("./src/middleware/authMiddleware");
 
 dotenv.config();
 
 const app = express();
 app.use(express.json());
 
+app.use("/api/departments", departmentRoutes);
+app.use("/api/auth", authRoutes);
+
+// ✅ Apply token middleware for all other routes
+// app.use(authenticateToken); // this line below all routes have token authentication
+
 // Import routes
 const userRoutes = require("./src/routes/userRoutes");
 app.use("/api/users", userRoutes);
-app.use("/api/departments", departmentRoutes);
+// app.use("/api/departments", departmentRoutes);
 app.use("/api/doctors", doctorRoutes);
-app.use("/api/auth", authRoutes);
 app.use("/api/patients", patientRoutes);
 app.use("/api/appointments", appointmentRoutes);
 app.use("/api/treatments", treatmentRoutes);
